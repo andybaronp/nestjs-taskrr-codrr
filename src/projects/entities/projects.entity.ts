@@ -1,7 +1,7 @@
 import { IProject } from 'interfaces/project.interface';
-import { BaseEntity } from 'src/config/base.entity';
-import { UsersProjectsEntity } from 'src/users/entities/usersProjects.entities';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { BaseEntity } from '../../config/base.entity';
+import { UsersProjectsEntity } from '../../users/entities/usersProjects.entities';
+import { Entity, Column, OneToMany } from 'typeorm';
 
 @Entity({ name: 'projects' })
 export class ProjectsEntity extends BaseEntity implements IProject {

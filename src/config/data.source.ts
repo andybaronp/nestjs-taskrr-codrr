@@ -1,4 +1,7 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ProjectsEntity } from 'src/projects/entities/projects.entity';
+import { UsersEntity } from 'src/users/entities/users.entity';
+import { UsersProjectsEntity } from 'src/users/entities/usersProjects.entities';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
@@ -7,19 +10,24 @@ ConfigModule.forRoot({
 });
 
 const configService = new ConfigService();
+
 export const DataSourceConfig: DataSourceOptions = {
   type: 'postgres',
   host: configService.get('DB_HOST'),
   port: configService.get('DB_PORT'),
   username: configService.get('DB_USER'),
-  password: configService.get('DB_PASSWORD'),
+  password: configService.get<string>('DB_PASSWORD'),
   database: configService.get('DB_NAME'),
-  entities: [__dirname + '/../**/**/*.entity{.ts,.js}'],
+  entities: [UsersEntity, ProjectsEntity, UsersProjectsEntity],
+  // entities: ['dist/../**/**/*.entity{.ts,.js}'],
+  // entities: [__dirname + '../**/**/*.entity{.ts,.js}'],
+  // entities: [__dirname + '/**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/../../migrations/*{.ts,.js}'],
   synchronize: false,
+
   migrationsRun: true,
   logging: false,
   namingStrategy: new SnakeNamingStrategy(),
 };
 
-export const AppDataSource = new DataSource(DataSourceConfig);
+export const appDataSource = new DataSource(DataSourceConfig);

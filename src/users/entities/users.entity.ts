@@ -1,8 +1,8 @@
 import { IUser } from 'interfaces/user.interface';
-import { BaseEntity } from 'src/config/base.entity';
-import { ROLES } from 'src/constants/rols';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { ROLES } from '../../constants/rols';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { UsersProjectsEntity } from './usersProjects.entities';
+import { BaseEntity } from '../../config/base.entity';
 
 @Entity({ name: 'users' })
 export class UsersEntity extends BaseEntity implements IUser {
@@ -20,6 +20,6 @@ export class UsersEntity extends BaseEntity implements IUser {
   password: string;
   @Column({ type: 'enum', enum: ROLES })
   role: ROLES;
-  @OneToMany(() => UsersProjectsEntity, (project) => project.user)
+  @OneToMany(() => UsersProjectsEntity, (userProject) => userProject.user)
   projectsIncludes: UsersProjectsEntity[];
 }
