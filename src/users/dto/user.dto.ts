@@ -2,7 +2,7 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
-  IsOctal,
+  IsOptional,
   IsString,
 } from 'class-validator';
 import { ROLES } from 'src/constants/rols';
@@ -38,31 +38,31 @@ export class UserDTO {
 }
 
 export class UserUpdateDTO {
-  @IsOctal()
+  @IsOptional()
   @IsString()
   firstName: string;
 
-  @IsOctal()
+  @IsOptional()
   @IsString()
   lastName: string;
 
-  @IsOctal()
+  @IsOptional()
   @IsNumber()
   age: number;
 
-  @IsOctal()
+  @IsOptional()
   @IsString()
   email: string;
 
-  @IsOctal()
+  @IsOptional()
   @IsString()
   username: string;
 
-  @IsOctal()
+  @IsOptional()
   @IsString()
   password: string;
 
-  @IsOctal()
+  @IsOptional()
   @IsEnum(ROLES)
   role: ROLES;
 }
