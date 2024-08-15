@@ -3,11 +3,21 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import * as morgan from 'morgan';
 import { CORS } from './constants';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   //Logger
   app.use(morgan('dev'));
+  //ConfigService initialization
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
+
   //ConfigService
   const configService = app.get(ConfigService);
   //PORT
