@@ -2,14 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersEntity } from '../entities/users.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { UserDTO, UserUpdateDTO } from '../dto/user.dto';
+import { UserDTO, UserToProjectDTO, UserUpdateDTO } from '../dto/user.dto';
 import { ErrorManager } from 'src/utils/error.manager';
+import { UsersProjectsEntity } from '../entities/usersProjects.entities';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UsersEntity)
     private readonly userRepository: Repository<UsersEntity>,
+    @InjectRepository(UsersProjectsEntity)
+    private readonly userProjectRepository: Repository<UsersProjectsEntity>,
   ) {}
 
   public async createUser(body: UserDTO): Promise<UsersEntity> {
@@ -100,6 +103,22 @@ export class UsersService {
         message: 'Usuario borrado correctamente',
         result: true,
       };
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
+  }
+
+  public async relationToProject(body: UserToProjectDTO) {
+    try {
+      const relacion: UsersProjectsEntity =
+        await this.userProjectRepository.save(body);
+      if (!relacion) {
+        throw new ErrorManager({
+          type: 'BAD_REQUEST',
+          message: 'No se ha podido registrar el usuario',
+        });
+      }
+      return relacion;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
     }
