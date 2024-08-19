@@ -53,6 +53,9 @@ export class UsersService {
       const user: UsersEntity = await this.userRepository
         .createQueryBuilder('users')
         .where({ id })
+        //relaciones para traer proyectos
+        .leftJoinAndSelect('users.projectsIncludes', 'projectsIncludes')
+        .leftJoinAndSelect('projectsIncludes.project', 'project')
         .getOne();
 
       if (!user) {

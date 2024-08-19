@@ -40,6 +40,9 @@ export class ProjectsService {
       const project = await this.projectRepository
         .createQueryBuilder('project')
         .where({ id })
+        //relaciones para traer usuaruio
+        .leftJoinAndSelect('project.usersIncludes', 'usersIncludes')
+        .leftJoinAndSelect('usersIncludes.user', 'user')
         .getOne();
       if (!project) {
         throw new ErrorManager({
