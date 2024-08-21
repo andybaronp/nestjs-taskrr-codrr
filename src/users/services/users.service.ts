@@ -6,6 +6,7 @@ import { UserDTO, UserToProjectDTO, UserUpdateDTO } from '../dto/user.dto';
 import { ErrorManager } from 'src/utils/error.manager';
 import { UsersProjectsEntity } from '../entities/usersProjects.entities';
 import * as bcrypt from 'bcrypt';
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -123,6 +124,22 @@ export class UsersService {
         });
       }
       return relacion;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
+  }
+
+  public async findBy({ key, value }: { key: keyof UsersEntity; value: any }) {
+    //valida si exite usurio o email con esa password
+
+    try {
+      const user: UsersEntity = await this.userRepository
+        .createQueryBuilder('user')
+        .addSelect('user.password')
+        .where({ [key]: value })
+        .getOne();
+
+      return user;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
     }
