@@ -6,7 +6,7 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
-import { ACCESS_LEVLE, ROLES } from 'src/constants/rols';
+import { ACCESS_LEVEL, ROLES } from 'src/constants/rols';
 import { UsersEntity } from '../entities/users.entity';
 import { ProjectsEntity } from 'src/projects/entities/projects.entity';
 
@@ -80,6 +80,6 @@ export class UserToProjectDTO {
   project: ProjectsEntity;
 
   @IsNotEmpty()
-  @IsEnum(ACCESS_LEVLE)
-  accessLevel: ACCESS_LEVLE;
+  @IsEnum(ACCESS_LEVEL)
+  accessLevel: ACCESS_LEVEL;
 }

@@ -8,9 +8,8 @@ import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { PUBLIC_KEY } from 'src/constants/key-decorators';
 import { UsersService } from 'src/users/services/users.service';
-import { ErrorManager } from 'src/utils/error.manager';
 import { useToken } from 'src/utils/use.token';
-import { AuthTokenResult, IUseToken } from '../interfaces/auth.interfaces';
+import { IUseToken } from '../interfaces/auth.interfaces';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
