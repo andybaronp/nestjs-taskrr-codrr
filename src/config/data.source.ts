@@ -13,17 +13,18 @@ const configService = new ConfigService();
 
 export const DataSourceConfig: DataSourceOptions = {
   type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'ucodrr',
-  password: 'secret1234',
-  database: 'codrrdb',
+  host: configService.get('DB_HOST'),
+  port: configService.get('DB_PORT'),
+  username: configService.get('DB_USER'),
+  password: configService.get<string>('DB_PASSWORD'),
+  database: configService.get('DB_NAME'),
   entities: [UsersEntity, ProjectsEntity, UsersProjectsEntity],
   // entities: ['dist/../**/**/*.entity{.ts,.js}'],
   // entities: [__dirname + '../**/**/*.entity{.ts,.js}'],
   // entities: [__dirname + '/**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/../../migrations/*{.ts,.js}'],
   synchronize: false,
+
   migrationsRun: true,
   logging: false,
   namingStrategy: new SnakeNamingStrategy(),
