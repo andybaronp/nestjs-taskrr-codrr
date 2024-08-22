@@ -4,8 +4,6 @@ import { ErrorManager } from 'src/utils/error.manager';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { ProjectDTO, ProjectUpdateDTO } from '../dto/projects.dto';
 import { ProjectsEntity } from '../entities/projects.entity';
-import { UsersProjectsEntity } from 'src/users/entities/usersProjects.entities';
-import { AccessLevel } from 'src/auth/decorators/access_level.decorator';
 import { ACCESS_LEVEL } from 'src/constants/rols';
 import { UsersService } from 'src/users/services/users.service';
 
@@ -14,8 +12,6 @@ export class ProjectsService {
   constructor(
     @InjectRepository(ProjectsEntity)
     private readonly projectRepository: Repository<ProjectsEntity>,
-    @InjectRepository(ProjectsEntity)
-    private readonly userProjectRepository: Repository<UsersProjectsEntity>,
     private readonly userService: UsersService,
   ) {}
 
