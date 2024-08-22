@@ -15,11 +15,14 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { AccessLevelGuard } from 'src/auth/guards/access_level.guard';
 import { AccessLevel } from 'src/auth/decorators/access_level.decorator';
+import { AdminAccess } from 'src/auth/decorators/admin.decorator';
 
 @Controller('projects')
 @UseGuards(AuthGuard, RolesGuard, AccessLevelGuard)
 export class ProjectsController {
   constructor(private readonly projectService: ProjectsService) {}
+
+  @AdminAccess()
   @Post('create')
   public async createProject(@Body() body: ProjectDTO) {
     return await this.projectService.createProject(body);
@@ -36,7 +39,7 @@ export class ProjectsController {
   ) {
     return await this.projectService.findProjectById(id);
   }
-  @AccessLevel(50)
+  @AccessLevel('OWNER')
   @Put('edit/:projectId')
   public async updateProject(
     @Param('projectId', new ParseUUIDPipe()) id: string,
@@ -45,6 +48,7 @@ export class ProjectsController {
     return await this.projectService.updateProject(body, id);
   }
 
+  @AccessLevel('OWNER')
   @Delete('delete/:projectId')
   public async deleteProject(
     @Param('projectId', new ParseUUIDPipe()) id: string,

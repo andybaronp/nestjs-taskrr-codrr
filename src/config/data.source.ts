@@ -14,7 +14,7 @@ const configService = new ConfigService();
 export const DataSourceConfig: DataSourceOptions = {
   type: 'postgres',
   host: configService.get('DB_HOST'),
-  port: configService.get('DB_PORT'),
+  port: configService.get<number>('DB_PORT'),
   username: configService.get('DB_USER'),
   password: configService.get<string>('DB_PASSWORD'),
   database: configService.get('DB_NAME'),
@@ -24,7 +24,6 @@ export const DataSourceConfig: DataSourceOptions = {
   // entities: [__dirname + '/**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/../../migrations/*{.ts,.js}'],
   synchronize: false,
-
   migrationsRun: true,
   logging: false,
   namingStrategy: new SnakeNamingStrategy(),
