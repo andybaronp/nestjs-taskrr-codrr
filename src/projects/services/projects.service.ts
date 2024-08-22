@@ -4,17 +4,33 @@ import { ErrorManager } from 'src/utils/error.manager';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { ProjectDTO, ProjectUpdateDTO } from '../dto/projects.dto';
 import { ProjectsEntity } from '../entities/projects.entity';
+import { UsersProjectsEntity } from 'src/users/entities/usersProjects.entities';
+import { AccessLevel } from 'src/auth/decorators/access_level.decorator';
+import { ACCESS_LEVEL } from 'src/constants/rols';
+import { UsersService } from 'src/users/services/users.service';
 
 @Injectable()
 export class ProjectsService {
   constructor(
     @InjectRepository(ProjectsEntity)
     private readonly projectRepository: Repository<ProjectsEntity>,
+    @InjectRepository(ProjectsEntity)
+    private readonly userProjectRepository: Repository<UsersProjectsEntity>,
+    private readonly userService: UsersService,
   ) {}
 
-  public async createProject(body: ProjectDTO): Promise<ProjectsEntity> {
+  public async createProject(body: ProjectDTO, userID: string): Promise<any> {
     try {
-      return await this.projectRepository.save(body);
+      const project = await this.projectRepository.save(body);
+      const user = await this.userService.findUserById(userID);
+
+      return await this.userService.relationToProject({
+        user,
+        project,
+        accessLevel: ACCESS_LEVEL.OWNER,
+      });
+
+      // return await this.projectRepository.save(project);
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
     }

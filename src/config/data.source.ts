@@ -13,11 +13,11 @@ const configService = new ConfigService();
 
 export const DataSourceConfig: DataSourceOptions = {
   type: 'postgres',
-  host: configService.get('DB_HOST'),
-  port: configService.get<number>('DB_PORT'),
-  username: configService.get('DB_USER'),
-  password: configService.get<string>('DB_PASSWORD'),
-  database: configService.get('DB_NAME'),
+  host: 'localhost',
+  port: 5432,
+  username: 'ucodrr',
+  password: 'secret1234',
+  database: 'codrrdb',
   entities: [UsersEntity, ProjectsEntity, UsersProjectsEntity],
   // entities: ['dist/../**/**/*.entity{.ts,.js}'],
   // entities: [__dirname + '../**/**/*.entity{.ts,.js}'],
