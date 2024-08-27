@@ -16,12 +16,13 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { AccessLevelGuard } from 'src/auth/guards/access_level.guard';
 import { AccessLevel } from 'src/auth/decorators/access_level.decorator';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-
+import { ApiParam, ApiTags } from '@nestjs/swagger';
+@ApiTags('Projects')
 @Controller('projects')
 @UseGuards(AuthGuard, RolesGuard, AccessLevelGuard)
 export class ProjectsController {
   constructor(private readonly projectService: ProjectsService) {}
-
+  @ApiParam({ name: 'userId' })
   @Roles('CREATOR')
   @Post('create/userOwner/:userId')
   public async createProject(

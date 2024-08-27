@@ -15,7 +15,8 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AdminAccess } from 'src/auth/decorators/admin.decorator';
-
+import { ApiHeader, ApiParam, ApiTags } from '@nestjs/swagger';
+@ApiTags('Users')
 @Controller('users')
 @UseGuards(AuthGuard, RolesGuard)
 export class UsersController {
@@ -25,12 +26,23 @@ export class UsersController {
   public async registerUser(@Body() body: UserDTO) {
     return await this.userService.createUser(body);
   }
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'JWT token',
+    example: 'Bearer token',
+  })
   @Roles('BASIC')
   @AdminAccess()
   @Get('all')
   public async findAllUsers() {
     return await this.userService.findUsers();
   }
+  @ApiParam({ name: 'id', type: String })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'JWT token',
+    example: 'Bearer token',
+  })
   @PublicAccess()
   @Get(':id')
   public async findUserById(@Param('id') id: string) {

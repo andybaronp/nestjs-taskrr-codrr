@@ -6,14 +6,13 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
-import { Observable } from 'rxjs';
 import {
   ACCESS_LEVEL_KEY,
   ADMIN_KEY,
   PUBLIC_KEY,
   ROLES_KEY,
 } from 'src/constants/key-decorators';
-import { ROLES } from 'src/constants/rols';
+import { ACCESS_LEVEL, ROLES } from 'src/constants/rols';
 import { UsersService } from 'src/users/services/users.service';
 
 @Injectable()
@@ -67,7 +66,7 @@ export class AccessLevelGuard implements CanActivate {
     if (userExistInProject === undefined)
       throw new UnauthorizedException('No formas parte del proyecto');
 
-    if (access_level !== userExistInProject.accessLevel)
+    if (Number(ACCESS_LEVEL[access_level]) > userExistInProject.accessLevel)
       throw new UnauthorizedException(
         'No tienes  el nivel de acceso necesario para realizar esta accion',
       );
