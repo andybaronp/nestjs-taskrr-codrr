@@ -15,7 +15,7 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AdminAccess } from 'src/auth/decorators/admin.decorator';
-import { ApiHeader, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 @ApiTags('Users')
 @Controller('users')
 @UseGuards(AuthGuard, RolesGuard)
@@ -42,6 +42,14 @@ export class UsersController {
     name: 'Authorization',
     description: 'JWT token',
     example: 'Bearer token',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'User found',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found',
   })
   @PublicAccess()
   @Get(':id')
